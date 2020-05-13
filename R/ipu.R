@@ -145,7 +145,7 @@ ipu <- function(primary_seed, primary_targets,
   primary_seed_mod <- process_seed_table(
     primary_seed, primary_id, marginal_columns
   )
-  
+
   if (!is.null(secondary_seed)) {
     # Modify the person seed table the same way, but sum by primary ID
     marginal_columns <- names(secondary_targets_mod)
@@ -163,11 +163,11 @@ ipu <- function(primary_seed, primary_targets,
   } else {
     seed <- primary_seed_mod
   }
-  
+
   # Add the geo information back.
   seed <- seed %>%
     dplyr::left_join(geo_equiv, by = primary_id)
-  
+    
   # store a vector of attribute column names to loop over later.
   # don't include primary_id or 'weight' in the vector.
   geo_pos <- grep("geo_", colnames(seed))
@@ -527,12 +527,12 @@ check_tables <- function(primary_seed, primary_targets,
 #' @return Nothing. Throws an error if one is found.
 
 check_missing_categories <- function(seed, target, target_name, geo_colname) {
-  
+
   for (geo in unique(unlist(seed[, geo_colname]))){  
     
     # Get column names for the current geo that have a >0 target
-    non_zero_targets <- target[target[geo_colname] == geo,
-                            colSums(target[target[geo_colname] == geo, ]) > 0]
+    non_zero_targets <- target[target[[geo_colname]] == geo,
+                            colSums(target[target[[geo_colname]] == geo, ]) > 0]
     col_names <- colnames(non_zero_targets)
     col_names <- type.convert(col_names[!col_names == geo_colname], as.is = TRUE)
     
